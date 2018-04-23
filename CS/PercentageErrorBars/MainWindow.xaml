@@ -1,0 +1,69 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ErrorBars"
+        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts" 
+        xmlns:nwindDataSetTableAdapters="clr-namespace:ErrorBars.nwindDataSetTableAdapters" 
+        x:Class="ErrorBars.MainWindow"
+        mc:Ignorable="d"
+        dx:ThemeManager.ThemeName="Office2013"
+        Title="MainWindow" Height="500" Width="720">
+    <Window.Resources>
+        <dx:TypedSimpleSource x:Key="TypedSimpleSource" AdapterType="{x:Type nwindDataSetTableAdapters:ProductsTableAdapter}" ContextType="{x:Type local:nwindDataSet}" Path="Products">
+            <dx:DesignDataManager.DesignData>
+                <dx:DesignDataSettings RowCount="5"/>
+            </dx:DesignDataManager.DesignData>
+        </dx:TypedSimpleSource>
+    </Window.Resources>
+    <Border Margin="2" BorderThickness="1" BorderBrush="DarkGray">
+        <Grid>
+            <dxc:ChartControl BorderThickness="0" DataSource="{Binding Data, Source={StaticResource TypedSimpleSource}}">
+                <dxc:ChartControl.Palette>
+                    <dxc:Office2013Palette/>
+                </dxc:ChartControl.Palette>
+                <dxc:ChartControl.Titles>
+                    <dxc:Title HorizontalAlignment="Center" Content="Units of Products on Order"/>
+                </dxc:ChartControl.Titles>
+                <dxc:ChartControl.Legends>
+                    <dxc:Legend Visible="True" HorizontalPosition="Left"/>
+                </dxc:ChartControl.Legends>
+                <dxc:XYDiagram2D x:Name="diagram">
+                    <dxc:XYDiagram2D.AxisX>
+                        <dxc:AxisX2D TickmarksMinorVisible="False"/>
+                    </dxc:XYDiagram2D.AxisX>
+                    <dxc:XYDiagram2D.AxisY>
+                        <dxc:AxisY2D>
+                            <dxc:AxisY2D.NumericScaleOptions>
+                                <dxc:ContinuousNumericScaleOptions AutoGrid="False" 
+                                                                   GridSpacing="10"/>
+                            </dxc:AxisY2D.NumericScaleOptions>
+                            <dxc:AxisY2D.WholeRange>
+                                <dxc:Range dxc:AxisY2D.AlwaysShowZeroLevel="False"/>
+                            </dxc:AxisY2D.WholeRange>
+                        </dxc:AxisY2D>
+                    </dxc:XYDiagram2D.AxisY>
+                    <dxc:PointSeries2D  x:Name="pointSeries"
+                                        DisplayName="Units on Standard Order" 
+                                        ArgumentDataMember="ProductName" 
+                                        ValueDataMember="UnitsOnOrder">
+                        <dxc:PointSeries2D.DataFilters>
+                            <dxc:DataFilter ColumnName="UnitsOnOrder" Value="10" Condition="GreaterThan"/>
+                        </dxc:PointSeries2D.DataFilters>
+                        <!--region #PercentageErrorBars-->
+                        <dxc:PointSeries2D.Indicators>
+                            <dxc:PercentageErrorBars Percent="10" 
+                                                     Direction="Both" 
+                                                     EndStyle="Cap"
+                                                     ShowInLegend="True"
+                                                     LegendText="Units on Custom Order"/>
+                        </dxc:PointSeries2D.Indicators>
+                        <!--endregion #PercentageErrorBars-->
+                    </dxc:PointSeries2D>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl>
+        </Grid>
+    </Border>
+</Window>
