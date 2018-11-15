@@ -1,3 +1,8 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [MainWindow.xaml](./CS/PercentageErrorBars/MainWindow.xaml) (VB: [MainWindow.xaml](./VB/PercentageErrorBars/MainWindow.xaml))
+<!-- default file list end -->
 # How to: Add the Percentage Error Bars indicator to a chart
 
 
